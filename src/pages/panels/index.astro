@@ -1,0 +1,43 @@
+---
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const { entries: posts, cacheHint } = await getEmDashCollection("panels", {
+	orderBy: { published_at: "desc" },
+});
+const { siteTitle, siteTagline } = resolveStarterSiteIdentity(await getSiteSettings());
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title={siteTitle} description={siteTagline}>
+	<h1>Panels</h1>
+
+	{
+		posts.length === 0 ? (
+			<p>
+				No posts yet.{" "}
+			</p>
+		) : (
+			<ul>
+				{posts.map((panel) => (
+					<li>
+						<a href={`/panels/${panel.id}`}>
+							{panel.data.hero_image && (
+								<Image image={panel.data.hero_image} />
+							)}
+							<h2>{panel.data.title}</h2>
+						</a>
+						{panel.data.description && <p>{panel.data.description}</p>}
+						{panel.data.publishedAt && (
+							<time datetime={panel.data.start_time.toString()}>
+								{panel.data.publishedAt.toString()}
+							</time>
+						)}
+					</li>
+				))}
+			</ul>
+		)
+	}
+</Base>

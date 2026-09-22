@@ -29,6 +29,8 @@ export default function PanelCalendar({ events }: Props) {
 		end: event.end,
 	}));
 
+	const startDate = new Date(2026, 10, 11);
+
 	function handleEventClick(info: EventClickInfo) {
 		info.jsEvent.preventDefault();
 		window.location.hash = `panel-${info.event.id}`;
@@ -37,7 +39,8 @@ export default function PanelCalendar({ events }: Props) {
 	return (
 		<FullCalendar
 			plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, classicThemePlugin]}
-			initialView="dayGridMonth"
+			initialView="dayGridWeek"
+			initialDate={startDate}
 			headerToolbar={{
 				left: "prev,next today",
 				center: "title",
