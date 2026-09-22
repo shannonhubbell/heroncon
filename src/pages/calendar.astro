@@ -1,0 +1,105 @@
+---
+import { getEmDashCollection } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PanelCalendar from "../components/PanelCalendar";
+import type { PanelEvent } from "../components/PanelCalendar";
+
+const { entries: panels, cacheHint } = await getEmDashCollection("panels", {
+	limit: 500,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const sortedPanels = [...panels].sort((a, b) =>
+	a.data.start_time.localeCompare(b.data.start_time),
+);
+
+const events: PanelEvent[] = sortedPanels.map((panel) => ({
+	id: panel.data.id,
+	title: panel.data.title,
+	start: panel.data.start_time,
+	end: panel.data.end_time,
+}));
+
+function formatRange(startIso: string, endIso: string) {
+	const start = new Date(startIso);
+	const end = new Date(endIso);
+	const day = start.toLocaleDateString("en-US", {
+		weekday: "long",
+		month: "long",
+		day: "numeric",
+	});
+	const timeFmt: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit" };
+	return `${day}, ${start.toLocaleTimeString("en-US", timeFmt)} – ${end.toLocaleTimeString("en-US", timeFmt)}`;
+}
+---
+
+<Base title="Calendar">
+	<h1>Calendar</h1>
+
+	{
+		events.length === 0 ? (
+			<p>No panels scheduled yet.</p>
+		) : (
+			<PanelCalendar client:load events={events} />
+		)
+	}
+
+	{
+		sortedPanels.map((panel) => (
+			<div id={`panel-${panel.data.id}`} class="panel-modal">
+				<a href="#" class="panel-modal__backdrop" aria-label="Close" />
+				<div class="panel-modal__content" role="dialog" aria-modal="true" aria-label={panel.data.title}>
+					<a href="#" class="panel-modal__close" aria-label="Close">×</a>
+					{panel.data.hero_image && (
+						<Image image={panel.data.hero_image} width={800} height={450} />
+					)}
+					<h2>{panel.data.title}</h2>
+					<p class="panel-modal__time">{formatRange(panel.data.start_time, panel.data.end_time)}</p>
+					<p>{panel.data.description}</p>
+				</div>
+			</div>
+		))
+	}
+</Base>
+
+<style>
+	.panel-modal {
+		display: none;
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+	}
+	.panel-modal:target {
+		display: block;
+	}
+	.panel-modal__backdrop {
+		position: absolute;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.5);
+	}
+	.panel-modal__content {
+		position: relative;
+		background: #fff;
+		border-radius: 8px;
+		padding: 1.5rem;
+		max-width: 32rem;
+		width: calc(100% - 2rem);
+		max-height: 85vh;
+		overflow-y: auto;
+		margin: 5vh auto;
+	}
+	.panel-modal__close {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.75rem;
+		font-size: 1.5rem;
+		line-height: 1;
+		text-decoration: none;
+		color: inherit;
+	}
+	.panel-modal__time {
+		color: #555;
+		font-size: 0.9rem;
+	}
+</style>
