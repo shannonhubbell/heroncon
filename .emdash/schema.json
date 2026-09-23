@@ -89,6 +89,13 @@
           "options": {
             "darkVariant": true
           }
+        },
+        {
+          "slug": "speaker",
+          "label": "Speaker",
+          "type": "reference",
+          "required": false,
+          "unique": false
         }
       ]
     },
@@ -133,7 +140,72 @@
           "unique": false
         }
       ]
+    },
+    {
+      "slug": "speakers",
+      "label": "Speakers",
+      "labelSingular": "Speaker",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "name",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "unique": false,
+          "validation": {
+            "maxLength": 100
+          }
+        },
+        {
+          "slug": "job_title",
+          "label": "Title",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "validation": {
+            "maxLength": 100
+          }
+        },
+        {
+          "slug": "biography",
+          "label": "Biography",
+          "type": "portableText",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "pronouns",
+          "label": "Preferred Pronouns",
+          "type": "string",
+          "required": false,
+          "unique": false,
+          "validation": {
+            "maxLength": 20
+          }
+        },
+        {
+          "slug": "headshot",
+          "label": "Headshot",
+          "type": "file",
+          "required": false,
+          "unique": false,
+          "validation": {
+            "allowedMimeTypes": [
+              "image/png",
+              "image/jpeg",
+              "image/gif",
+              "image/webp",
+              "image/avif"
+            ]
+          }
+        }
+      ]
     }
   ],
-  "version": "74b3166afd3be835"
+  "version": "9bec994821c0945c"
 }

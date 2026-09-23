@@ -27,6 +27,7 @@ export interface Panel {
   end_time: string;
   description: string;
   hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  speaker?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -49,10 +50,27 @@ export interface Post {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Speaker {
+  id: string;
+  slug: string | null;
+  status: string;
+  name: string;
+  job_title?: string;
+  biography?: PortableTextBlock[];
+  pronouns?: string;
+  headshot?: { id: string; url?: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
     pages: Page;
     panels: Panel;
     posts: Post;
+    speakers: Speaker;
   }
 }
