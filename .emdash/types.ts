@@ -25,7 +25,10 @@ export interface Panel {
   end_time: string;
   description: string;
   hero_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
-  speaker?: string;
+  speaker_1?: string;
+  speaker_2?: string;
+  speaker_3?: string;
+  speaker_4?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -54,9 +57,9 @@ export interface Speaker {
   status: string;
   name: string;
   job_title?: string;
-  biography?: PortableTextBlock[];
   pronouns?: string;
-  headshot?: { id: string; url?: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
+  headshot?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  biography?: PortableTextBlock[];
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;

@@ -1,0 +1,82 @@
+---
+import { getEmDashEntry, getEmDashCollection, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: speaker, cacheHint } = await getEmDashEntry("speakers", slug);
+
+if (!speaker) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+
+const seo = getSeoMeta(speaker, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+// A panel can have up to four speaker slots; find every panel that lists this speaker in any of them.
+const speakerId = speaker.data.id;
+const panelResults = await Promise.all(
+	["speaker_1", "speaker_2", "speaker_3", "speaker_4"].map((field) =>
+		getEmDashCollection("panels", { where: { [field]: speakerId } }),
+	),
+);
+const panels = [...new Map(panelResults.flatMap((r) => r.entries).map((p) => [p.data.id, p])).values()];
+---
+
+<Base
+	title={seo.title || speaker.data.name}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	image={seo.ogImage}
+	content={{ collection: "speakers", id: speaker.data.id, slug }}
+>
+	<article>
+		{
+			speaker.data.headshot && (
+				<div {...speaker.edit.headshot}>
+					<Image image={speaker.data.headshot} />
+				</div>
+			)
+		}
+
+		<h1 {...speaker.edit.name}>{speaker.data.name}</h1>
+
+		{
+			speaker.data.job_title && (
+				<p {...speaker.edit.job_title}>{speaker.data.job_title}</p>
+			)
+		}
+
+		{speaker.data.pronouns && <p {...speaker.edit.pronouns}>{speaker.data.pronouns}</p>}
+
+		<PortableText value={speaker.data.biography} />
+
+		{
+			panels.length > 0 && (
+				<section>
+					<h2>Appearing on</h2>
+					<ul>
+						{panels.map((panel) => (
+							<li>
+								<a href={`/panels/${panel.id}`}>{panel.data.title}</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+	</article>
+</Base>

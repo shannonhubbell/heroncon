@@ -91,11 +91,44 @@
           }
         },
         {
-          "slug": "speaker",
-          "label": "Speaker",
+          "slug": "speaker_1",
+          "label": "Speaker 1",
           "type": "reference",
           "required": false,
-          "unique": false
+          "unique": false,
+          "options": {
+            "collection": "speakers"
+          }
+        },
+        {
+          "slug": "speaker_2",
+          "label": "Speaker 2",
+          "type": "reference",
+          "required": false,
+          "unique": false,
+          "options": {
+            "collection": "speakers"
+          }
+        },
+        {
+          "slug": "speaker_3",
+          "label": "Speaker 3",
+          "type": "reference",
+          "required": false,
+          "unique": false,
+          "options": {
+            "collection": "speakers"
+          }
+        },
+        {
+          "slug": "speaker_4",
+          "label": "Speaker 4",
+          "type": "reference",
+          "required": false,
+          "unique": false,
+          "options": {
+            "collection": "speakers"
+          }
         }
       ]
     },
@@ -145,6 +178,7 @@
       "slug": "speakers",
       "label": "Speakers",
       "labelSingular": "Speaker",
+      "description": "Panelists and guests appearing at HeronCon.",
       "supports": [
         "drafts",
         "revisions"
@@ -156,20 +190,28 @@
           "label": "Name",
           "type": "string",
           "required": true,
-          "unique": false,
-          "validation": {
-            "maxLength": 100
-          }
+          "unique": false
         },
         {
           "slug": "job_title",
-          "label": "Title",
+          "label": "Job Title",
           "type": "string",
           "required": false,
-          "unique": false,
-          "validation": {
-            "maxLength": 100
-          }
+          "unique": false
+        },
+        {
+          "slug": "pronouns",
+          "label": "Pronouns",
+          "type": "string",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "headshot",
+          "label": "Headshot",
+          "type": "image",
+          "required": false,
+          "unique": false
         },
         {
           "slug": "biography",
@@ -177,35 +219,9 @@
           "type": "portableText",
           "required": false,
           "unique": false
-        },
-        {
-          "slug": "pronouns",
-          "label": "Preferred Pronouns",
-          "type": "string",
-          "required": false,
-          "unique": false,
-          "validation": {
-            "maxLength": 20
-          }
-        },
-        {
-          "slug": "headshot",
-          "label": "Headshot",
-          "type": "file",
-          "required": false,
-          "unique": false,
-          "validation": {
-            "allowedMimeTypes": [
-              "image/png",
-              "image/jpeg",
-              "image/gif",
-              "image/webp",
-              "image/avif"
-            ]
-          }
         }
       ]
     }
   ],
-  "version": "9bec994821c0945c"
+  "version": "07f19d7656f876ea"
 }
