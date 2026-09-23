@@ -41,6 +41,7 @@ export default function PanelCalendar({ events }: Props) {
 			plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, classicThemePlugin]}
 			initialView="dayGridWeek"
 			initialDate={startDate}
+			timeZone="America/Los_Angeles"
 			headerToolbar={{
 				left: "prev,next today",
 				center: "title",
