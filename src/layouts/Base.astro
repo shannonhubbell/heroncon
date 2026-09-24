@@ -22,7 +22,12 @@ interface Props {
 	content?: { collection: string; id: string; slug?: string | null };
 }
 
-import "../styles/general.css";
+// `?url` keeps general.css out of the page's CSS module graph, so Astro's
+// dev SSR doesn't inject it (and its unscoped `*`/`:root` rules) into every
+// route's <head> — including the EmDash admin, which never imports Base.
+// We emit it as a route-scoped <link> below instead. Same pattern EmDash's
+// own admin shell uses for its stylesheet.
+import generalCssUrl from "../styles/general.css?url";
 
 const { title, pageTitle, description, image, canonical, content } =
 	Astro.props;
@@ -53,6 +58,7 @@ const pageCtx = createPublicPageContext({
 	<head>
 		<ClientRouter />
 
+		<link rel="stylesheet" href={generalCssUrl} />
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{fullTitle}</title>

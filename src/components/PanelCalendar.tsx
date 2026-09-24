@@ -39,7 +39,7 @@ export default function PanelCalendar({ events }: Props) {
 	return (
 		<FullCalendar
 			plugins={[dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin, classicThemePlugin]}
-			initialView="dayGridWeek"
+			initialView="listWeek"
 			initialDate={startDate}
 			timeZone="America/Los_Angeles"
 			headerToolbar={{
