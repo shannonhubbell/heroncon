@@ -2,20 +2,175 @@
 	"$schema": "https://emdashcms.com/seed.schema.json",
 	"version": "1",
 	"meta": {
-		"name": "Starter",
-		"description": "A minimal EmDash starter with posts and pages",
-		"author": "EmDash"
+		"name": "Exported Seed",
+		"description": "Exported from existing EmDash database"
 	},
 	"settings": {
-		"title": "My Site",
-		"tagline": "Built with EmDash"
+		"title": "HeronCon",
+		"tagline": "The world's greatest gathering of fans of waterfowl!",
+		"timezone": "America/Los_Angeles"
 	},
 	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"urlPattern": "/{slug}",
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "template",
+					"label": "Template",
+					"type": "select",
+					"required": true,
+					"validation": {
+						"options": [
+							"Default",
+							"Home"
+						]
+					}
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero Image",
+					"type": "file",
+					"validation": {
+						"allowedMimeTypes": [
+							"image/png",
+							"image/jpeg",
+							"image/gif",
+							"image/webp",
+							"image/avif"
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "panels",
+			"label": "Panels",
+			"labelSingular": "Panel",
+			"description": "Live discussions, presentations, and Q&As.",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"group": "Calendar",
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true,
+					"indexed": true,
+					"validation": {
+						"minLength": 1,
+						"maxLength": 100
+					}
+				},
+				{
+					"slug": "start_time",
+					"label": "Start Time",
+					"type": "datetime",
+					"required": true
+				},
+				{
+					"slug": "end_time",
+					"label": "End Time",
+					"type": "datetime",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "hero_image",
+					"label": "Hero Image",
+					"type": "image",
+					"validation": {
+						"allowedMimeTypes": [
+							"image/png",
+							"image/jpeg",
+							"image/gif",
+							"image/webp",
+							"image/avif"
+						]
+					},
+					"options": {
+						"darkVariant": true
+					}
+				},
+				{
+					"slug": "speaker_1",
+					"label": "Speaker 1",
+					"type": "reference",
+					"widget": "reference",
+					"options": {
+						"collection": "speakers"
+					}
+				},
+				{
+					"slug": "speaker_2",
+					"label": "Speaker 2",
+					"type": "reference",
+					"widget": "reference",
+					"options": {
+						"collection": "speakers"
+					}
+				},
+				{
+					"slug": "speaker_3",
+					"label": "Speaker 3",
+					"type": "reference",
+					"widget": "reference",
+					"options": {
+						"collection": "speakers"
+					}
+				},
+				{
+					"slug": "speaker_4",
+					"label": "Speaker 4",
+					"type": "reference",
+					"widget": "reference",
+					"options": {
+						"collection": "speakers"
+					}
+				}
+			]
+		},
 		{
 			"slug": "posts",
 			"label": "Posts",
 			"labelSingular": "Post",
-			"supports": ["drafts", "revisions", "search", "seo"],
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
 			"fields": [
 				{
 					"slug": "title",
@@ -43,58 +198,110 @@
 			]
 		},
 		{
-			"slug": "pages",
-			"label": "Pages",
-			"labelSingular": "Page",
-			"urlPattern": "/{slug}",
-			"supports": ["drafts", "revisions", "search"],
+			"slug": "speakers",
+			"label": "Speakers",
+			"labelSingular": "Speaker",
+			"description": "Panelists and guests appearing at HeronCon.",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
 			"fields": [
 				{
-					"slug": "title",
-					"label": "Title",
+					"slug": "name",
+					"label": "Name",
 					"type": "string",
-					"required": true,
-					"searchable": true
+					"required": true
 				},
 				{
-					"slug": "content",
-					"label": "Content",
-					"type": "portableText",
-					"searchable": true
+					"slug": "job_title",
+					"label": "Job Title",
+					"type": "string"
+				},
+				{
+					"slug": "pronouns",
+					"label": "Pronouns",
+					"type": "string"
+				},
+				{
+					"slug": "headshot",
+					"label": "Headshot",
+					"type": "image"
+				},
+				{
+					"slug": "biography",
+					"label": "Biography",
+					"type": "portableText"
 				}
 			]
 		}
 	],
+	"defaultLocale": "en",
 	"taxonomies": [
 		{
+			"id": "tax:category",
 			"name": "category",
 			"label": "Categories",
 			"labelSingular": "Category",
 			"hierarchical": true,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
 				{
+					"id": "term:category:general",
 					"slug": "general",
 					"label": "General"
 				},
 				{
+					"id": "term:category:updates",
 					"slug": "updates",
 					"label": "Updates"
 				}
 			]
 		},
 		{
+			"id": "tax:speakers",
+			"name": "speakers",
+			"label": "Speakers",
+			"hierarchical": false,
+			"collections": [
+				"panels"
+			],
+			"terms": [
+				{
+					"id": "term:speakers:shannon-ellery-hubbell",
+					"slug": "shannon-ellery-hubbell",
+					"label": "Shannon Ellery Hubbell",
+					"description": "Shannon builds things for the internet, writes , and is more enthusiastic about paleontology than a non-paleontologist adult should be."
+				},
+				{
+					"id": "term:speakers:max-renn",
+					"slug": "max-renn",
+					"label": "Max Renn",
+					"description": "Television mogul."
+				}
+			]
+		},
+		{
+			"id": "tax:tag",
 			"name": "tag",
 			"label": "Tags",
 			"labelSingular": "Tag",
 			"hierarchical": false,
-			"collections": ["posts"],
+			"collections": [
+				"posts",
+				"speakers",
+				"panels"
+			],
 			"terms": [
 				{
+					"id": "term:tag:starter",
 					"slug": "starter",
 					"label": "Starter"
 				},
 				{
+					"id": "term:tag:example",
 					"slug": "example",
 					"label": "Example"
 				}
@@ -103,6 +310,7 @@
 	],
 	"menus": [
 		{
+			"id": "menu:primary",
 			"name": "primary",
 			"label": "Primary Navigation",
 			"items": [
@@ -113,13 +321,23 @@
 				},
 				{
 					"type": "custom",
-					"label": "Posts",
-					"url": "/posts"
+					"label": "About",
+					"url": "/about"
 				},
 				{
 					"type": "custom",
-					"label": "About",
-					"url": "/about"
+					"label": "Calendar",
+					"url": "/calendar"
+				},
+				{
+					"type": "custom",
+					"label": "Panels",
+					"url": "/panels"
+				},
+				{
+					"type": "custom",
+					"label": "Speakers",
+					"url": "/speakers"
 				}
 			]
 		}
@@ -129,32 +347,61 @@
 			"name": "sidebar",
 			"label": "Sidebar",
 			"description": "Sidebar widget area",
-			"widgets": [
-				{
-					"type": "component",
-					"componentId": "core:search",
-					"title": "Search"
-				},
-				{
-					"type": "component",
-					"componentId": "core:categories",
-					"title": "Categories"
-				},
-				{
-					"type": "component",
-					"componentId": "core:recent-posts",
-					"title": "Recent Posts",
-					"settings": {
-						"count": 5
-					}
-				}
-			]
+			"widgets": []
+		}
+	],
+	"bylines": [
+		{
+			"id": "byline:shannon-hubbell",
+			"slug": "shannon-hubbell",
+			"displayName": "Shannon Ellery Hubbell",
+			"bio": "I build things for the internet, I write, and I am more enthusiastic about paleontology than a non-paleontologist adult should be. I hail from the beautiful town of New Orleans, Louisiana and now live in the beautiful town of Oakland, California.",
+			"websiteUrl": "https://shannonhubbell.com"
 		}
 	],
 	"content": {
 		"pages": [
 			{
-				"id": "about",
+				"id": "pages:home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"title": "Home",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "d6miqpk3y",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "5l5t9wac3",
+									"text": "Get down here!"
+								}
+							]
+						}
+					],
+					"template": "Home",
+					"hero_image": {
+						"id": "01M364R5ES66JSEXD825JAFGJF",
+						"provider": "local",
+						"filename": "Egrets_in_AP_W_IMG_4220.jpg",
+						"mimeType": "image/jpeg",
+						"width": 1000,
+						"height": 576,
+						"blurhash": "L5Eo[GW=00-;00.8of%L4n~q?aIU",
+						"dominantColor": "rgb(115,116,113)",
+						"meta": {
+							"storageKey": "01M364R5ERH2FS0KZ6N26KDWN9.01M364R5FSCJBH48VD558SSC53.jpg",
+							"caption": null,
+							"blurhash": "L5Eo[GW=00-;00.8of%L4n~q?aIU",
+							"dominantColor": "rgb(115,116,113)"
+						}
+					}
+				}
+			},
+			{
+				"id": "pages:about",
 				"slug": "about",
 				"status": "published",
 				"data": {
@@ -172,18 +419,292 @@
 							],
 							"_key": "k0"
 						}
-					]
+					],
+					"template": "Default"
 				}
+			}
+		],
+		"panels": [
+			{
+				"id": "panels:closing-ceremony-a-toast-to-next-years-herons",
+				"slug": "closing-ceremony-a-toast-to-next-years-herons",
+				"status": "published",
+				"data": {
+					"title": "Closing Ceremony: A Toast to Next Year's Herons",
+					"start_time": "2026-11-14T19:00:00.000Z",
+					"end_time": "2026-11-14T20:00:00.000Z",
+					"description": "Lacinia eget consectetur sed, convallis at tellus. Proin eget tortor risus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Nulla porttitor accumsan tincidunt.\n\nAccumsan id imperdiet et, porttitor at sem. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Donec sollicitudin molestie malesuada. Cras ultricies ligula sed magna dictum porta.",
+					"speaker_1": "$ref:01M364K65GDXGG3RCBKC1G47FY",
+					"speaker_2": "$ref:01M363RJZZB9T492T1CHD5W7ZX",
+					"speaker_3": "$ref:01M363RJJ3P6ZS4PAD6DJF8E0Q"
+				}
+			},
+			{
+				"id": "panels:home-tweet-home-building-backyard-bird-habitats",
+				"slug": "home-tweet-home-building-backyard-bird-habitats",
+				"status": "published",
+				"data": {
+					"title": "Home Tweet Home: Building Backyard Bird Habitats",
+					"start_time": "2026-11-14T17:30:00.000Z",
+					"end_time": "2026-11-14T18:30:00.000Z",
+					"description": "Egestas non nisi, porttitor at sem, vivamus suscipit tortor eget felis. Curabitur aliquet quam id dui posuere blandit. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.\n\nConsectetur adipiscing elit. Vestibulum euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Pellentesque in ipsum id orci porta dapibus.",
+					"speaker_1": "$ref:01M38SCF9FFTS6PSZ7FF1FC6P6",
+					"speaker_2": "$ref:01M38SCFPDA69X7PEDQZABM43H"
+				}
+			},
+			{
+				"id": "panels:pelican-brief-legal-issues-in-wildlife-photography",
+				"slug": "pelican-brief-legal-issues-in-wildlife-photography",
+				"status": "published",
+				"data": {
+					"title": "Pelican Brief: Legal Issues in Wildlife Photography",
+					"start_time": "2026-11-14T16:00:00.000Z",
+					"end_time": "2026-11-14T17:00:00.000Z",
+					"description": "Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Donec sollicitudin molestie malesuada. Sed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl.\n\nPorttitor at sem. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada.",
+					"speaker_1": "$ref:01M38SCEWFPH8P0M33E9N1E5YQ"
+				}
+			},
+			{
+				"id": "panels:egret-expectations-managing-birding-trip-disappointments",
+				"slug": "egret-expectations-managing-birding-trip-disappointments",
+				"status": "published",
+				"data": {
+					"title": "Egret Expectations: Managing Birding Trip Disappointments",
+					"start_time": "2026-11-14T14:30:00.000Z",
+					"end_time": "2026-11-14T15:30:00.000Z",
+					"description": "Nulla quis lorem ut libero malesuada feugiat. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta.\n\nPellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Nulla porttitor accumsan tincidunt. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Quisque velit nisi, pretium ut lacinia in, elementum id enim.",
+					"speaker_1": "$ref:01M363RJJ3P6ZS4PAD6DJF8E0Q",
+					"speaker_2": "$ref:01M38SCC34ZPDDD01KBMY66TBV"
+				}
+			},
+			{
+				"id": "panels:fly-south-for-the-winter-migration-science-101",
+				"slug": "fly-south-for-the-winter-migration-science-101",
+				"status": "published",
+				"data": {
+					"title": "Fly South for the Winter: Migration Science 101",
+					"start_time": "2026-11-14T13:00:00.000Z",
+					"end_time": "2026-11-14T14:00:00.000Z",
+					"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Pellentesque in ipsum id orci porta dapibus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.\n\nSed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus suscipit tortor eget felis porttitor volutpat.",
+					"speaker_1": "$ref:01M38SCCWC3Q67Z861RBFFFR32",
+					"speaker_2": "$ref:01M38SCB9ERYXJY3A0MHSRNHX1"
+				}
+			},
+			{
+				"id": "panels:duck-duck-panel-a-roundtable-on-waterfowl-migration",
+				"slug": "duck-duck-panel-a-roundtable-on-waterfowl-migration",
+				"status": "published",
+				"data": {
+					"title": "Duck, Duck, Panel: A Roundtable on Waterfowl Migration",
+					"start_time": "2026-11-13T19:00:00.000Z",
+					"end_time": "2026-11-13T20:00:00.000Z",
+					"description": "Vivamus suscipit tortor eget felis porttitor volutpat. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Nulla quis lorem ut libero malesuada feugiat.\n\nCras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. Proin eget tortor risus. Nulla porttitor accumsan tincidunt.",
+					"speaker_1": "$ref:01M38SCCWC3Q67Z861RBFFFR32",
+					"speaker_2": "$ref:01M38SCDA4FHVBD73E5QCV5VY8"
+				}
+			},
+			{
+				"id": "panels:hawk-talk-falconry-demonstration-and-qa",
+				"slug": "hawk-talk-falconry-demonstration-and-qa",
+				"status": "published",
+				"data": {
+					"title": "Hawk Talk: Falconry Demonstration and Q&A",
+					"start_time": "2026-11-13T17:30:00.000Z",
+					"end_time": "2026-11-13T18:30:00.000Z",
+					"description": "Nulla porttitor accumsan tincidunt. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.\n\nCurabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum porta.",
+					"speaker_1": "$ref:01M38SCCFEH421RJKMM38V3BHG"
+				}
+			},
+			{
+				"id": "panels:nest-egg-financial-planning-for-aspiring-ornithologists",
+				"slug": "nest-egg-financial-planning-for-aspiring-ornithologists",
+				"status": "published",
+				"data": {
+					"title": "Nest Egg: Financial Planning for Aspiring Ornithologists",
+					"start_time": "2026-11-13T16:00:00.000Z",
+					"end_time": "2026-11-13T17:00:00.000Z",
+					"description": "Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Proin eget tortor risus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.\n\nVestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada. Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.",
+					"speaker_1": "$ref:01M38SCEG13F9MBNABJQHMVS3Z"
+				}
+			},
+			{
+				"id": "panels:peacock-and-roll-the-history-of-bird-themed-rock-bands",
+				"slug": "peacock-and-roll-the-history-of-bird-themed-rock-bands",
+				"status": "published",
+				"data": {
+					"title": "Peacock and Roll: The History of Bird-Themed Rock Bands",
+					"start_time": "2026-11-13T14:30:00.000Z",
+					"end_time": "2026-11-13T15:30:00.000Z",
+					"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Sed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.\n\nPraesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Pellentesque in ipsum id orci porta dapibus.",
+					"speaker_1": "$ref:01M38SCEG13F9MBNABJQHMVS3Z",
+					"speaker_2": "$ref:01M38SCE3HQDAMFS98GYTR9FE2"
+				}
+			},
+			{
+				"id": "panels:a-murder-of-crows-true-crime-meets-corvid-behavior",
+				"slug": "a-murder-of-crows-true-crime-meets-corvid-behavior",
+				"status": "published",
+				"data": {
+					"title": "A Murder of Crows: True Crime Meets Corvid Behavior",
+					"start_time": "2026-11-13T13:00:00.000Z",
+					"end_time": "2026-11-13T14:00:00.000Z",
+					"description": "Lacinia eget consectetur sed, convallis at tellus. Proin eget tortor risus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Nulla porttitor accumsan tincidunt.\n\nAccumsan id imperdiet et, porttitor at sem. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Donec sollicitudin molestie malesuada. Cras ultricies ligula sed magna dictum porta.",
+					"speaker_1": "$ref:01M363RJZZB9T492T1CHD5W7ZX",
+					"speaker_2": "$ref:01M363RJJ3P6ZS4PAD6DJF8E0Q"
+				}
+			},
+			{
+				"id": "panels:wing-it-improv-comedy-from-the-heroncon-players",
+				"slug": "wing-it-improv-comedy-from-the-heroncon-players",
+				"status": "published",
+				"data": {
+					"title": "Wing It: Improv Comedy from the HeronCon Players",
+					"start_time": "2026-11-12T19:00:00.000Z",
+					"end_time": "2026-11-12T20:00:00.000Z",
+					"description": "Egestas non nisi, porttitor at sem, vivamus suscipit tortor eget felis. Curabitur aliquet quam id dui posuere blandit. Nulla quis lorem ut libero malesuada feugiat. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.\n\nConsectetur adipiscing elit. Vestibulum euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Pellentesque in ipsum id orci porta dapibus.",
+					"speaker_1": "$ref:01M38SCE3HQDAMFS98GYTR9FE2",
+					"speaker_2": "$ref:01M38SCEG13F9MBNABJQHMVS3Z"
+				}
+			},
+			{
+				"id": "panels:toucan-play-that-game-trivia-night-for-tropical-bird-nerds",
+				"slug": "toucan-play-that-game-trivia-night-for-tropical-bird-nerds",
+				"status": "published",
+				"data": {
+					"title": "Toucan Play That Game: Trivia Night for Tropical Bird Nerds",
+					"start_time": "2026-11-12T17:30:00.000Z",
+					"end_time": "2026-11-12T18:30:00.000Z",
+					"description": "Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Donec sollicitudin molestie malesuada. Sed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl.\n\nPorttitor at sem. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus suscipit tortor eget felis porttitor volutpat. Donec rutrum congue leo eget malesuada.",
+					"speaker_1": "$ref:01M38SCG2X19YQXCEJ42BZDZ90",
+					"speaker_2": "$ref:01M38SCGFAPRYTB1PJNK62DXSB"
+				}
+			},
+			{
+				"id": "panels:puffin-around-coastal-seabird-photography-workshop",
+				"slug": "puffin-around-coastal-seabird-photography-workshop",
+				"status": "published",
+				"data": {
+					"title": "Puffin Around: Coastal Seabird Photography Workshop",
+					"start_time": "2026-11-12T16:00:00.000Z",
+					"end_time": "2026-11-12T17:00:00.000Z",
+					"description": "Nulla quis lorem ut libero malesuada feugiat. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta.\n\nPellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Nulla porttitor accumsan tincidunt. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Quisque velit nisi, pretium ut lacinia in, elementum id enim.",
+					"speaker_1": "$ref:01M38SCBPKJAWQA44HHSXSYT29",
+					"speaker_2": "$ref:01M38SCB9ERYXJY3A0MHSRNHX1"
+				}
+			},
+			{
+				"id": "panels:cardinal-sins-confessions-of-a-backyard-birder",
+				"slug": "cardinal-sins-confessions-of-a-backyard-birder",
+				"status": "published",
+				"data": {
+					"title": "Cardinal Sins: Confessions of a Backyard Birder",
+					"start_time": "2026-11-12T14:30:00.000Z",
+					"end_time": "2026-11-12T15:30:00.000Z",
+					"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Pellentesque in ipsum id orci porta dapibus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.\n\nSed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus suscipit tortor eget felis porttitor volutpat.",
+					"speaker_1": "$ref:01M38SCFPDA69X7PEDQZABM43H"
+				}
+			},
+			{
+				"id": "panels:talon-show-a-raptor-skills-demonstration",
+				"slug": "talon-show-a-raptor-skills-demonstration",
+				"status": "published",
+				"data": {
+					"title": "Talon Show: A Raptor Skills Demonstration",
+					"start_time": "2026-11-12T13:00:00.000Z",
+					"end_time": "2026-11-12T14:00:00.000Z",
+					"description": "Vivamus suscipit tortor eget felis porttitor volutpat. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Nulla quis lorem ut libero malesuada feugiat.\n\nCras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. Proin eget tortor risus. Nulla porttitor accumsan tincidunt.",
+					"speaker_1": "$ref:01M38SCCFEH421RJKMM38V3BHG",
+					"speaker_2": "$ref:01M38SCCWC3Q67Z861RBFFFR32"
+				}
+			},
+			{
+				"id": "panels:the-great-gull-debate-seagull-vs-laughing-gull-smackdown",
+				"slug": "the-great-gull-debate-seagull-vs-laughing-gull-smackdown",
+				"status": "published",
+				"data": {
+					"title": "The Great Gull Debate: Seagull vs. Laughing Gull Smackdown",
+					"start_time": "2026-11-11T19:00:00.000Z",
+					"end_time": "2026-11-11T20:00:00.000Z",
+					"description": "Nulla porttitor accumsan tincidunt. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Pellentesque in ipsum id orci porta dapibus. Proin eget tortor risus. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.\n\nCurabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Cras ultricies ligula sed magna dictum porta.",
+					"speaker_1": "$ref:01M363RJZZB9T492T1CHD5W7ZX",
+					"speaker_2": "$ref:01M38SCDPT5SHAM1BYVTJ0S09T"
+				}
+			},
+			{
+				"id": "panels:flamingle-mixer-networking-for-wading-bird-enthusiasts",
+				"slug": "flamingle-mixer-networking-for-wading-bird-enthusiasts",
+				"status": "published",
+				"data": {
+					"title": "Flamingle Mixer: Networking for Wading Bird Enthusiasts",
+					"start_time": "2026-11-11T17:30:00.000Z",
+					"end_time": "2026-11-11T18:30:00.000Z",
+					"description": "Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Proin eget tortor risus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a.\n\nVestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Donec rutrum congue leo eget malesuada. Nulla quis lorem ut libero malesuada feugiat. Cras ultricies ligula sed magna dictum porta. Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit.",
+					"speaker_1": "$ref:01M38SCC34ZPDDD01KBMY66TBV"
+				}
+			},
+			{
+				"id": "panels:owl-be-there-for-you-nocturnal-birding-meetup",
+				"slug": "owl-be-there-for-you-nocturnal-birding-meetup",
+				"status": "published",
+				"data": {
+					"title": "Owl Be There For You: Nocturnal Birding Meetup",
+					"start_time": "2026-11-11T16:00:00.000Z",
+					"end_time": "2026-11-11T17:00:00.000Z",
+					"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Sed euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.\n\nPraesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur aliquet quam id dui posuere blandit. Cras ultricies ligula sed magna dictum porta. Nulla porttitor accumsan tincidunt. Pellentesque in ipsum id orci porta dapibus.",
+					"speaker_1": "$ref:01M38SCCFEH421RJKMM38V3BHG",
+					"speaker_2": "$ref:01M38SCF9FFTS6PSZ7FF1FC6P6"
+				}
+			},
+			{
+				"id": "panels:egrets-too-snooty-to-be-herons",
+				"slug": "egrets-too-snooty-to-be-herons",
+				"status": "published",
+				"data": {
+					"title": "Egrets? Too snooty to be herons?",
+					"start_time": "2026-11-11T14:00:00.000Z",
+					"end_time": "2026-11-11T15:00:00.000Z",
+					"description": "Suspendisse eleifend pretium nibh vel gravida. Maecenas viverra nibh quis eleifend aliquet. Suspendisse nec nunc in velit sollicitudin rhoncus. Sed eleifend elit ut risus efficitur, in lacinia neque dictum. Morbi sed arcu sodales mauris rhoncus sagittis id in massa. Nunc gravida bibendum erat, eget ultricies urna ultricies auctor. Suspendisse gravida bibendum tellus, vel efficitur dolor faucibus a. Sed ultricies turpis a fringilla gravida. Vestibulum mattis tincidunt justo, eget iaculis ante accumsan vel. Morbi rhoncus dolor ex, eget fringilla dui semper pellentesque. Sed sollicitudin posuere quam ut blandit. Praesent eu ligula consectetur, tincidunt sem non, ullamcorper lectus. Curabitur accumsan tellus id nisl commodo fermentum. Nam orci diam, venenatis eu justo malesuada, semper bibendum mi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum eu ligula porttitor, feugiat neque vitae, lacinia felis.",
+					"hero_image": {
+						"$media": {
+							"url": "/_emdash/api/media/file/01M364R5ERH2FS0KZ6N26KDWN9.01M364R5FSCJBH48VD558SSC53.jpg",
+							"filename": "Egrets_in_AP_W_IMG_4220.jpg"
+						}
+					},
+					"speaker_1": "$ref:01M364K65GDXGG3RCBKC1G47FY"
+				}
+			},
+			{
+				"id": "panels:can-you-be-friends-with-a-shoebill-stork",
+				"slug": "can-you-be-friends-with-a-shoebill-stork",
+				"status": "published",
+				"data": {
+					"title": "Can you be friends with a shoebill stork?",
+					"start_time": "2026-11-11T13:30:00.000Z",
+					"end_time": "2026-11-11T14:30:00.000Z",
+					"description": "Truly a question for the ages! Aenean rutrum lorem leo, id tincidunt magna venenatis porta. Vestibulum sodales, ligula id elementum faucibus, ipsum turpis rutrum metus, vel congue lacus nisi eget libero. Aenean ut congue dolor. Donec rutrum semper ullamcorper. Quisque ac arcu sodales, sagittis felis sed, vulputate leo. Nam luctus nibh velit, et venenatis lectus accumsan a.\n\nQuisque consectetur velit sed mollis vehicula. Duis mattis nulla ut arcu congue sollicitudin. Ut a vehicula erat.\n\n",
+					"hero_image": {
+						"$media": {
+							"url": "/_emdash/api/media/file/01M35C9ZNJWXK0CV52WT0RBKV8.01M35C9ZPC0SF77P9011H0TDRV.jpg",
+							"filename": "The-Shoebill-Stork.jpg"
+						}
+					},
+					"speaker_1": "$ref:01M363RJJ3P6ZS4PAD6DJF8E0Q",
+					"speaker_2": "$ref:01M363RJZZB9T492T1CHD5W7ZX"
+				},
+				"bylines": [
+					{
+						"byline": "byline:shannon-hubbell"
+					}
+				]
 			}
 		],
 		"posts": [
 			{
-				"id": "post-1",
+				"id": "posts:welcome",
 				"slug": "welcome",
 				"status": "published",
 				"data": {
 					"title": "Welcome",
-					"excerpt": "Your first post. Replace this with your own content.",
 					"content": [
 						{
 							"_type": "block",
@@ -221,11 +742,484 @@
 							],
 							"_key": "k4"
 						}
-					]
+					],
+					"excerpt": "Your first post. Replace this with your own content."
 				},
 				"taxonomies": {
-					"category": ["general"],
-					"tag": ["starter", "example"]
+					"category": [
+						"general"
+					],
+					"tag": [
+						"starter",
+						"example"
+					]
+				}
+			}
+		],
+		"speakers": [
+			{
+				"id": "speakers:bea-swallow",
+				"slug": "bea-swallow",
+				"status": "published",
+				"data": {
+					"name": "Bea Swallow",
+					"job_title": "Nature Podcaster",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Bea co-hosts a trivia-format podcast about birds of the world.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:yusuf-lark",
+				"slug": "yusuf-lark",
+				"status": "published",
+				"data": {
+					"name": "Yusuf Lark",
+					"job_title": "Zookeeper",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Yusuf cares for the tropical bird collection at the city zoo.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:samuel-robin",
+				"slug": "samuel-robin",
+				"status": "published",
+				"data": {
+					"name": "Samuel Robin",
+					"job_title": "Conservation Biologist",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Samuel researches urban bird habitats and backyard conservation.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:ingrid-merlin",
+				"slug": "ingrid-merlin",
+				"status": "published",
+				"data": {
+					"name": "Ingrid Merlin",
+					"job_title": "Aviary Curator",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Ingrid curates the raptor aviary at the regional nature center.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:martin-kite",
+				"slug": "martin-kite",
+				"status": "published",
+				"data": {
+					"name": "Martin Kite",
+					"job_title": "Wildlife Attorney",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Martin specializes in habitat protection law and wildlife photography disputes.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:rosalind-peacock",
+				"slug": "rosalind-peacock",
+				"status": "published",
+				"data": {
+					"name": "Rosalind Peacock",
+					"job_title": "Financial Advisor",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Rosalind helps fellow birders budget for their next big trip.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:felix-drake",
+				"slug": "felix-drake",
+				"status": "published",
+				"data": {
+					"name": "Felix Drake",
+					"job_title": "Comedy Writer",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Felix writes sketches for HeronCon's annual bird-themed improv show.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:wanda-sandpiper",
+				"slug": "wanda-sandpiper",
+				"status": "published",
+				"data": {
+					"name": "Wanda Sandpiper",
+					"job_title": "Bird Bander",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Wanda has banded thousands of shorebirds at coastal monitoring stations.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:gregory-plover",
+				"slug": "gregory-plover",
+				"status": "published",
+				"data": {
+					"name": "Gregory Plover",
+					"job_title": "Science Communicator",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Gregory hosts a podcast about backyard birding for total beginners.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:nadia-osprey",
+				"slug": "nadia-osprey",
+				"status": "published",
+				"data": {
+					"name": "Nadia Osprey",
+					"job_title": "Migration Researcher",
+					"pronouns": "she/they",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Nadia tracks migratory routes using satellite tags and citizen-science reports.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:oscar-kestrel",
+				"slug": "oscar-kestrel",
+				"status": "published",
+				"data": {
+					"name": "Oscar Kestrel",
+					"job_title": "Falconer",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Oscar has trained raptors for educational programs for over fifteen years.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:talia-finch",
+				"slug": "talia-finch",
+				"status": "published",
+				"data": {
+					"name": "Talia Finch",
+					"job_title": "Birding Guide",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Talia leads HeronCon's dawn birding walks and can identify a warbler by call alone.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:desmond-swift",
+				"slug": "desmond-swift",
+				"status": "published",
+				"data": {
+					"name": "Desmond Swift",
+					"job_title": "Wildlife Photographer",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Desmond's photos of migrating shorebirds have appeared in three nature calendars.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:priya-wren",
+				"slug": "priya-wren",
+				"status": "published",
+				"data": {
+					"name": "Priya Wren",
+					"job_title": "Field Biologist",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Priya spends her summers tagging songbirds in the marshlands surrounding HeronCon's host city.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:shannon-ellery-hubbell",
+				"slug": "shannon-ellery-hubbell",
+				"status": "published",
+				"data": {
+					"name": "Shannon Ellery Hubbell",
+					"job_title": "Independent Web Developer",
+					"pronouns": "he/him",
+					"headshot": {
+						"$media": {
+							"url": "/_emdash/api/media/file/01M35QZ33AYBYQDGGHZ1DBM1N5.01M35QZ34GM0JZCYXMC0YB5EGK.jpg",
+							"filename": "headshot.jpg"
+						}
+					},
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "y6s7w096h",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "kpo05d9r1",
+									"text": "“I build things for the internet, I write, and I am more enthusiastic about paleontology than a non-paleontologist adult should be. I hail from the beautiful town of New Orleans, Louisiana and now live in the beautiful town of Oakland, California.”"
+								}
+							]
+						}
+					]
+				},
+				"bylines": [
+					{
+						"byline": "byline:shannon-hubbell"
+					}
+				]
+			},
+			{
+				"id": "speakers:marcus-crane",
+				"slug": "marcus-crane",
+				"status": "published",
+				"data": {
+					"name": "Marcus Crane",
+					"job_title": "Ornithologist",
+					"pronouns": "he/him",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "Marcus leads HeronCon's birding walks every year.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "speakers:jane-heron",
+				"slug": "jane-heron",
+				"status": "published",
+				"data": {
+					"name": "Jane Heron",
+					"job_title": "Wetlands Ecologist",
+					"pronouns": "she/her",
+					"biography": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "h1",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k0",
+									"text": "About Jane",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k3",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k2",
+									"text": "Jane has studied shoebill storks for over a decade.",
+									"marks": []
+								}
+							]
+						}
+					]
 				}
 			}
 		]
