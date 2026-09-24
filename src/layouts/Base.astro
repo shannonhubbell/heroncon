@@ -7,6 +7,7 @@ import {
 	EmDashBodyEnd,
 } from "emdash/ui";
 import PageHeader from "../components/PageHeader.astro";
+import PageFooter from "../components/PageFooter.astro";
 import { ClientRouter } from "astro:transitions";
 import { createPublicPageContext } from "emdash/page";
 import LiveSearch from "emdash/ui/search";
@@ -79,9 +80,7 @@ const pageCtx = createPublicPageContext({
 			<slot />
 		</main>
 
-		<footer>
-			<WidgetArea name="sidebar" />
-		</footer>
+		<PageFooter />
 
 		<EmDashBodyEnd page={pageCtx} />
 	</body>

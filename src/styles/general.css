@@ -8,8 +8,8 @@
     color-scheme: light;
     --bg-primary: #b4bfce;
     --text-primary: #000000;
-    --text-highlight: #163157;
-    --content-width: 1500px;
+    --text-highlight: rgba(16, 31, 57, 1);
+    --content-width: 1400px;
     --header-height: 8rem;
 }
 
@@ -17,4 +17,14 @@
     width: var(--content-width);
     max-width: calc(100% - 5rem);
     margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Life Savers", sans-serif;
+    font-weight: 800;
 }

@@ -43,19 +43,19 @@ const menu = await getMenu("primary");
 					menu?.items.map((item) => {
 						const href = item.url;
 						return (
-						<li class:list={item.cssClasses}>
-							<a
-								href={item.url}
-								target={item.target}
-								aria-current={
-									Astro.url.pathname === href
-										? "page"
-										: undefined
-								}
-							>
-								{item.label}
-							</a>
-						</li>
+							<li class:list={item.cssClasses}>
+								<a
+									href={item.url}
+									target={item.target}
+									aria-current={
+										Astro.url.pathname === href
+											? "page"
+											: undefined
+									}
+								>
+									{item.label}
+								</a>
+							</li>
 						);
 					})
 				}
@@ -74,6 +74,8 @@ const menu = await getMenu("primary");
 		width: 100%;
 		height: var(--header-height);
 		z-index: 1000;
+		border-bottom: 1px solid var(--bg-primary);
+
 	}
 	.layout {
 		display: flex;
@@ -131,7 +133,9 @@ const menu = await getMenu("primary");
 		height: 3px;
 		background: #fff;
 		border-radius: 2px;
-		transition: transform 0.25s ease, opacity 0.25s ease;
+		transition:
+			transform 0.25s ease,
+			opacity 0.25s ease;
 	}
 	.menu-toggle span:nth-child(1) {
 		top: 0.65rem;

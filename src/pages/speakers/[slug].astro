@@ -52,7 +52,7 @@ const panels = [...new Map(panelResults.flatMap((r) => r.entries).map((p) => [p.
 			)
 		}
 
-		<h1 {...speaker.edit.name}>{speaker.data.name}</h1>
+		<h1 {...speaker.edit.name}><a href="/speakers">Speakers</a> / {speaker.data.name}</h1>
 
 		{
 			speaker.data.job_title && (

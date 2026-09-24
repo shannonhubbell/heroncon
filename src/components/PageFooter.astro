@@ -1,0 +1,61 @@
+---
+import { getMenu, getSiteSettings } from "emdash";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
+    await getSiteSettings(),
+);
+const year = new Date().getFullYear();
+const menu = await getMenu("footer");
+---
+
+<footer id="page-footer">
+    <div class="layout">
+        <p>&copy; {year} {siteTitle}</p>
+        <nav>
+            <ul>
+                {
+                    menu?.items.map((item) => {
+                        const href = item.url;
+                        return (
+                            <li class:list={item.cssClasses}>
+                                <a
+                                    href={item.url}
+                                    target={item.target}
+                                    aria-current={
+                                        Astro.url.pathname === href
+                                            ? "page"
+                                            : undefined
+                                    }
+                                >
+                                    {item.label}
+                                </a>
+                            </li>
+                        );
+                    })
+                }
+            </ul>
+        </nav>
+    </div>
+</footer>
+
+<style>
+    #page-footer {
+        text-align: center;
+        font-size: 0.85rem;
+        padding: 4rem 0;
+    }
+    nav {
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            a {
+                font-size: 0.85rem;
+                color: #222;
+            }
+        }
+    }
+</style>
