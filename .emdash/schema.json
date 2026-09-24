@@ -24,6 +24,35 @@
           "type": "portableText",
           "required": false,
           "unique": false
+        },
+        {
+          "slug": "template",
+          "label": "Template",
+          "type": "select",
+          "required": true,
+          "unique": false,
+          "validation": {
+            "options": [
+              "Default",
+              "Home"
+            ]
+          }
+        },
+        {
+          "slug": "hero_image",
+          "label": "Hero Image",
+          "type": "file",
+          "required": false,
+          "unique": false,
+          "validation": {
+            "allowedMimeTypes": [
+              "image/png",
+              "image/jpeg",
+              "image/gif",
+              "image/webp",
+              "image/avif"
+            ]
+          }
         }
       ]
     },
@@ -96,6 +125,7 @@
           "type": "reference",
           "required": false,
           "unique": false,
+          "widget": "reference",
           "options": {
             "collection": "speakers"
           }
@@ -106,6 +136,7 @@
           "type": "reference",
           "required": false,
           "unique": false,
+          "widget": "reference",
           "options": {
             "collection": "speakers"
           }
@@ -116,6 +147,7 @@
           "type": "reference",
           "required": false,
           "unique": false,
+          "widget": "reference",
           "options": {
             "collection": "speakers"
           }
@@ -126,6 +158,7 @@
           "type": "reference",
           "required": false,
           "unique": false,
+          "widget": "reference",
           "options": {
             "collection": "speakers"
           }
@@ -223,5 +256,5 @@
       ]
     }
   ],
-  "version": "07f19d7656f876ea"
+  "version": "f173559cd767a410"
 }

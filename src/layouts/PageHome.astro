@@ -1,0 +1,30 @@
+---
+import type { ContentEntry, InferCollectionData } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "./Base.astro";
+import HomeBanner from "../components/HomeBanner.astro";
+
+interface Props {
+  page: ContentEntry<InferCollectionData<"pages">>;
+}
+
+const { page } = Astro.props;
+
+---
+<HomeBanner
+    headline="Waiting around is for the birds!"
+    subheader="HeronCon 2026 is hitting Oakland, California!"
+    cta="Register now!"
+    ctaUrl="/registration"
+    heroImage={page.data.hero_image}
+   />
+<Base title={page.data.title}>
+</Base>
+
+<style>
+  .page-default {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding:  0;
+  }
+</style>
