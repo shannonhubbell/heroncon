@@ -3,12 +3,17 @@ import { getEmDashCollection, getSiteSettings } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getPanelSpeakers } from "../../utils/panel-speakers";
 
 const { entries: posts, cacheHint } = await getEmDashCollection("panels", {
 	orderBy: { published_at: "desc" },
 });
 const { siteTitle, siteTagline } = resolveStarterSiteIdentity(await getSiteSettings());
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const speakersByPanel = new Map(
+	await Promise.all(posts.map(async (panel) => [panel.data.id, await getPanelSpeakers(panel)] as const)),
+);
 ---
 
 <Base title={siteTitle} description={siteTagline}>
@@ -17,26 +22,39 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 	{
 		posts.length === 0 ? (
 			<p>
-				No posts yet.{" "}
+				No panels yet.{" "}
 			</p>
 		) : (
 			<ul>
-				{posts.map((panel) => (
-					<li>
-						<a href={`/panels/${panel.id}`}>
-							{panel.data.hero_image && (
-								<Image image={panel.data.hero_image} />
+				{posts.map((panel) => {
+					const speakers = speakersByPanel.get(panel.data.id) ?? [];
+					return (
+						<li>
+							<a href={`/panels/${panel.id}`}>
+								{panel.data.hero_image && (
+									<Image image={panel.data.hero_image} />
+								)}
+								<h2>{panel.data.title}</h2>
+							</a>
+							{panel.data.description && <p>{panel.data.description}</p>}
+							{panel.data.publishedAt && (
+								<time datetime={panel.data.start_time.toString()}>
+									{panel.data.publishedAt.toString()}
+								</time>
 							)}
-							<h2>{panel.data.title}</h2>
-						</a>
-						{panel.data.description && <p>{panel.data.description}</p>}
-						{panel.data.publishedAt && (
-							<time datetime={panel.data.start_time.toString()}>
-								{panel.data.publishedAt.toString()}
-							</time>
-						)}
-					</li>
-				))}
+							{speakers.length > 0 && (
+								<p>
+									{speakers.map((speaker, i) => (
+										<>
+											{i > 0 && ", "}
+											<a href={`/speakers/${speaker.id}`}>{speaker.data.name}</a>
+										</>
+									))}
+								</p>
+							)}
+						</li>
+					);
+				})}
 			</ul>
 		)
 	}

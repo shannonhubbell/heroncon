@@ -1,0 +1,86 @@
+---
+import { getEmDashCollection } from "emdash";
+import { Image } from "emdash/ui";
+import HeronHeadshot from "../assets/img/heronheadshot.webp";
+
+const { entries: speakers, cacheHint } = await getEmDashCollection("speakers", {
+    orderBy: { published_at: "desc" },
+    where: { tag: "featured" },
+});
+Astro.cache.set(cacheHint);
+---
+
+<h2>Featured Speakers!</h2>
+<ul>
+    {
+        speakers.map((speaker) => (
+            <li>
+                <a href={`/speakers/${speaker.id}`}>
+                    <div class="headshot">
+                        {speaker.data.headshot ? (
+                            <Image image={speaker.data.headshot} />
+                        ) : (
+                            <Image image={HeronHeadshot.src} />
+                        )}
+                    </div>
+                    <div class="text">
+                        <h3>{speaker.data.name}</h3>
+                        <p>{speaker.data.job_title}</p>
+                    </div>
+                </a>
+            </li>
+        ))
+    }
+</ul>
+<style>
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        row-gap: 1rem;
+        li {
+            width: calc(50% - .5rem);
+        }
+        a {
+            text-decoration: none;
+            background: var(--text-highlight);
+            position: relative;
+        }
+        .headshot {
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+            img {
+                width: 100%;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translateX( -50% ) translateY( -50% );
+            }
+        }
+        .text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(from var(--text-highlight) r g b / 0.9);
+            width: 100%;
+            padding: .5rem;
+        }
+        h3 {
+            font-family: "Lexend", sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #FFF;
+            margin: 0;
+        }
+        p {
+            margin: .2rem 0;
+            font-size: .8rem;
+            color: var(--bg-primary);
+        }
+    }
+</style>

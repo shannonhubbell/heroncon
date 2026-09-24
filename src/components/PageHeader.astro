@@ -1,0 +1,231 @@
+---
+import { getMenu, getSiteSettings } from "emdash";
+
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
+	await getSiteSettings(),
+);
+const menu = await getMenu("primary");
+---
+
+<header>
+	<div class="layout">
+		<div class="site-logo">
+			<a href="/">
+				{
+					siteLogo ? (
+						<img
+							src={siteLogo.url}
+							alt={siteLogo.alt || siteTitle}
+							style="height:48px;width:auto;margin:-8px 0;display:block;"
+						/>
+					) : (
+						siteTitle
+					)
+				}
+			</a>
+			{siteTagline}
+		</div>
+		<button
+			class="menu-toggle"
+			type="button"
+			aria-expanded="false"
+			aria-controls="primary-menu"
+			aria-label="Toggle menu"
+		>
+			<span></span>
+			<span></span>
+			<span></span>
+		</button>
+		<nav id="primary-menu">
+			<ul>
+				{
+					menu?.items.map((item) => {
+						const href = item.url;
+						return (
+							<li class:list={item.cssClasses}>
+								<a
+									href={item.url}
+									target={item.target}
+									aria-current={
+										Astro.url.pathname === href
+											? "page"
+											: undefined
+									}
+								>
+									{item.label}
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</nav>
+	</div>
+</header>
+
+<style>
+	header {
+		padding: 1rem 0 0;
+		background-color: var(--text-highlight);
+		color: var(--bg-primary);
+		position: fixed;
+		top: 0;
+		width: 100%;
+		height: var(--header-height);
+		z-index: 1000;
+		border-bottom: 1px solid var(--bg-primary);
+
+	}
+	.layout {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.site-logo {
+		a {
+			text-decoration: none;
+			font-size: 3rem;
+			font-weight: 800;
+			justify-content: center;
+			color: #fff;
+			display: block;
+			transition: 0.5s;
+			margin: 0;
+			&:hover {
+				transform: scale(1.05);
+			}
+		}
+	}
+	nav {
+		align-items: center;
+		height: 100%;
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			gap: 1rem;
+			a {
+				display: inline-block;
+				text-decoration: none;
+				color: #fff;
+				text-transform: uppercase;
+				font-size: 1.2rem;
+			}
+		}
+	}
+	.menu-toggle {
+		display: none;
+		position: relative;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+		background: none;
+		border: none;
+		cursor: pointer;
+		z-index: 1001;
+	}
+	.menu-toggle span {
+		position: absolute;
+		left: 0.25rem;
+		right: 0.25rem;
+		height: 3px;
+		background: #fff;
+		border-radius: 2px;
+		transition:
+			transform 0.25s ease,
+			opacity 0.25s ease;
+	}
+	.menu-toggle span:nth-child(1) {
+		top: 0.65rem;
+	}
+	.menu-toggle span:nth-child(2) {
+		top: 1.15rem;
+	}
+	.menu-toggle span:nth-child(3) {
+		top: 1.65rem;
+	}
+	.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+		transform: translateY(0.5rem) rotate(45deg);
+	}
+	.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+		opacity: 0;
+	}
+	.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+		transform: translateY(-0.5rem) rotate(-45deg);
+	}
+
+	@media (max-width: 768px) {
+		.menu-toggle {
+			display: block;
+		}
+		nav {
+			position: fixed;
+			top: var(--header-height);
+			left: 0;
+			right: 0;
+			height: 0;
+			overflow: hidden;
+			background-color: var(--text-highlight);
+			transition: height 0.25s ease;
+		}
+		nav[data-open="true"] {
+			height: calc(100vh - var(--header-height));
+			overflow-y: auto;
+		}
+		nav ul {
+			flex-direction: column;
+			gap: 0;
+			padding: 0.5rem 0 2rem;
+		}
+		nav ul li {
+			width: 100%;
+		}
+		nav ul a {
+			display: block;
+			padding: 0.85rem 2.5rem;
+		}
+	}
+</style>
+
+<script>
+	function initMenuToggle() {
+		const toggle = document.querySelector(".menu-toggle");
+		const nav = document.querySelector("header nav");
+		if (!(toggle instanceof HTMLElement) || !(nav instanceof HTMLElement)) {
+			return;
+		}
+
+		const closeMenu = () => {
+			toggle.setAttribute("aria-expanded", "false");
+			delete nav.dataset.open;
+			document.body.style.removeProperty("overflow");
+		};
+
+		toggle.addEventListener("click", () => {
+			const isOpen = toggle.getAttribute("aria-expanded") === "true";
+			if (isOpen) {
+				closeMenu();
+			} else {
+				toggle.setAttribute("aria-expanded", "true");
+				nav.dataset.open = "true";
+				document.body.style.overflow = "hidden";
+			}
+		});
+
+		nav.querySelectorAll("a").forEach((link) => {
+			link.addEventListener("click", closeMenu);
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") closeMenu();
+		});
+
+		window.addEventListener("resize", () => {
+			if (window.innerWidth > 768) closeMenu();
+		});
+	}
+
+	document.addEventListener("astro:page-load", initMenuToggle);
+</script>

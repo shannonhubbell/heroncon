@@ -1,6 +1,9 @@
 ---
 import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
+import PageDefault from "../layouts/PageDefault.astro";
+import PageHome from "../layouts/PageHome.astro";
+
 import Base from "../layouts/Base.astro";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
@@ -16,6 +19,11 @@ if (!page) {
 	return Astro.redirect("/404");
 }
 
+const layouts = new Map([
+  ["Default", PageDefault],
+  ["Home", PageHome],
+]);
+
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
 
@@ -24,18 +32,10 @@ const seo = getSeoMeta(page, {
 	siteUrl: Astro.url.origin,
 	path: Astro.url.pathname.replace(/\/$/, ""),
 });
+
+const Layout = layouts.get(page.data.template ?? "") ?? PageDefault;
+
+
 ---
 
-<Base
-	title={seo.title}
-	pageTitle={seo.ogTitle}
-	description={seo.description}
-	canonical={seo.canonical}
-	content={{ collection: "pages", id: page.data.id, slug }}
->
-	<article>
-		<h1 {...page.edit.title}>{page.data.title}</h1>
-
-		<PortableText value={page.data.content} />
-	</article>
-</Base>
+<Layout page={page} />

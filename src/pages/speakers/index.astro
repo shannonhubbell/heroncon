@@ -1,0 +1,34 @@
+---
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const { entries: speakers, cacheHint } = await getEmDashCollection("speakers", {
+	orderBy: { name: "asc" },
+});
+const { siteTitle, siteTagline } = resolveStarterSiteIdentity(await getSiteSettings());
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title={`Speakers — ${siteTitle}`} description={siteTagline}>
+	<h1>Speakers</h1>
+
+	{
+		speakers.length === 0 ? (
+			<p>No speakers yet.</p>
+		) : (
+			<ul>
+				{speakers.map((speaker) => (
+					<li>
+						<a href={`/speakers/${speaker.id}`}>
+							{speaker.data.headshot && <Image image={speaker.data.headshot} />}
+							<h2>{speaker.data.name}</h2>
+						</a>
+						{speaker.data.job_title && <p>{speaker.data.job_title}</p>}
+					</li>
+				))}
+			</ul>
+		)
+	}
+</Base>

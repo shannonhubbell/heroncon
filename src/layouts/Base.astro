@@ -6,6 +6,9 @@ import {
 	EmDashBodyStart,
 	EmDashBodyEnd,
 } from "emdash/ui";
+import PageHeader from "../components/PageHeader.astro";
+import PageFooter from "../components/PageFooter.astro";
+import { ClientRouter } from "astro:transitions";
 import { createPublicPageContext } from "emdash/page";
 import LiveSearch from "emdash/ui/search";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
@@ -20,8 +23,18 @@ interface Props {
 	content?: { collection: string; id: string; slug?: string | null };
 }
 
-const { title, pageTitle, description, image, canonical, content } = Astro.props;
-const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(await getSiteSettings());
+// `?url` keeps general.css out of the page's CSS module graph, so Astro's
+// dev SSR doesn't inject it (and its unscoped `*`/`:root` rules) into every
+// route's <head> — including the EmDash admin, which never imports Base.
+// We emit it as a route-scoped <link> below instead. Same pattern EmDash's
+// own admin shell uses for its stylesheet.
+import generalCssUrl from "../styles/general.css?url";
+
+const { title, pageTitle, description, image, canonical, content } =
+	Astro.props;
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
+	await getSiteSettings(),
+);
 const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
 const pageDescription = description ?? siteTagline;
 
@@ -44,43 +57,54 @@ const pageCtx = createPublicPageContext({
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
+		<ClientRouter />
+
+		<link rel="stylesheet" href={generalCssUrl} />
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{fullTitle}</title>
-		{pageDescription && <meta name="description" content={pageDescription} />}
+		{
+			pageDescription && (
+				<meta name="description" content={pageDescription} />
+			)
+		}
 		{canonical && <link rel="canonical" href={canonical} />}
 		<EmDashHead page={pageCtx} />
 	</head>
 	<body>
 		<EmDashBodyStart page={pageCtx} />
 
-		<header>
-			<nav>
-				<a href="/">
-					{siteLogo
-						? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} style="height:48px;width:auto;margin:-8px 0;display:block;" />
-						: siteTitle
-					}
-				</a>
-				{
-					menu?.items.map((item) => (
-						<a href={item.url} target={item.target}>
-							{item.label}
-						</a>
-					))
-				}
-				<LiveSearch placeholder="Search..." collections={["posts", "pages"]} />
-			</nav>
-		</header>
+		<PageHeader />
 
-		<main>
+		<main class="layout">
 			<slot />
 		</main>
 
-		<footer>
-			<WidgetArea name="sidebar" />
-		</footer>
+		<PageFooter />
 
 		<EmDashBodyEnd page={pageCtx} />
 	</body>
 </html>
+<style>
+	@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Life+Savers:wght@400;700;800&family=Space+Grotesk:wght@300..700&display=swap");
+
+	body {
+		background: var(--bg-primary);
+		font-family: "Lexend", sans-serif;
+		color: var(--text-primary);
+		font-size: 16px;
+		font-optical-sizing: auto;
+		padding-top: var(--header-height);
+		margin: 0;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: "Life Savers", sans-serif;
+	}
+
+</style>

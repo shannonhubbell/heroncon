@@ -1,0 +1,91 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getPanelSpeakers } from "../../utils/panel-speakers";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: panel, cacheHint } = await getEmDashEntry("panels", slug);
+
+if (!panel) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+
+const seo = getSeoMeta(panel, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+const speakers = await getPanelSpeakers(panel);
+---
+
+<Base
+	title={seo.title || panel.data.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	image={seo.ogImage}
+	content={{ collection: "panels", id: panel.data.id, slug }}
+>
+	<article>
+		{
+			panel.data.hero_image && (
+				<div {...panel.edit.hero_image}>
+					<Image image={panel.data.hero_image} />
+				</div>
+			)
+		}
+
+		<h1 {...panel.edit.title}>{panel.data.title}</h1>
+
+		<p>
+			<time datetime={panel.data.start_time.toString()}>
+				{new Date(panel.data.start_time).toLocaleString("en-US", {
+					weekday: "long",
+					month: "long",
+					day: "numeric",
+					hour: "numeric",
+					minute: "2-digit",
+				})}
+			</time>
+			{" – "}
+			<time datetime={panel.data.end_time.toString()}>
+				{new Date(panel.data.end_time).toLocaleString("en-US", {
+					hour: "numeric",
+					minute: "2-digit",
+				})}
+			</time>
+		</p>
+
+		<p {...panel.edit.description}>{panel.data.description}</p>
+
+		{
+			speakers.length > 0 && (
+				<section>
+					<h2>Speakers</h2>
+					<ul>
+						{speakers.map((speaker) => (
+							<li>
+								<a href={`/speakers/${speaker.id}`}>
+									{speaker.data.headshot && <Image image={speaker.data.headshot} />}
+									{speaker.data.name}
+								</a>
+								{speaker.data.job_title && <p>{speaker.data.job_title}</p>}
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+	</article>
+</Base>
