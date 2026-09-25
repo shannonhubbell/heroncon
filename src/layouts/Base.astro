@@ -60,7 +60,8 @@ const pageCtx = createPublicPageContext({
 		<ClientRouter />
 
 		<link rel="stylesheet" href={generalCssUrl} />
-		<meta charset="utf-8" />
+		<meta charset="UTF-8" />
+
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{fullTitle}</title>
 		{
@@ -75,6 +76,8 @@ const pageCtx = createPublicPageContext({
 		<EmDashBodyStart page={pageCtx} />
 
 		<PageHeader />
+
+		<slot name="banner" />
 
 		<main class="layout">
 			<slot />
@@ -106,5 +109,4 @@ const pageCtx = createPublicPageContext({
 	h6 {
 		font-family: "Life Savers", sans-serif;
 	}
-
 </style>
